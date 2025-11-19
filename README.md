@@ -1,3 +1,5 @@
+A simple single-page scraping program.
+
 Task Type: Navigate Fill Click Wait Table
 
 Selector: You can use either CSS selectors or XPath. When using XPath, you must prefix it with xpath=.
