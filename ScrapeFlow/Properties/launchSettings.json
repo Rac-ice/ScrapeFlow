@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "ScrapeFlow": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}

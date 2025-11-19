@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36301.6 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScrapeFlow", "ScrapeFlow\ScrapeFlow.csproj", "{47FDB3D2-F22A-44BB-A1EF-C5B6E19399BC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{47FDB3D2-F22A-44BB-A1EF-C5B6E19399BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47FDB3D2-F22A-44BB-A1EF-C5B6E19399BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47FDB3D2-F22A-44BB-A1EF-C5B6E19399BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47FDB3D2-F22A-44BB-A1EF-C5B6E19399BC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D273C766-FB3D-44FC-8A06-17984A4065E7}
+	EndGlobalSection
+EndGlobal
