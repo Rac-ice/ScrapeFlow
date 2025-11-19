@@ -59,3 +59,8 @@ public class Column
 
     public bool IsIdentity { get; set; }
 }
+
+public class ListAction : TaskAction
+{
+    public string Selector { get; set; } = string.Empty;
+}

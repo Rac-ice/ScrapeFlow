@@ -25,6 +25,7 @@ public class TaskActionHelper
                 TaskType.Click => task.Get<ClickAction>(),
                 TaskType.Wait => task.Get<WaitAction>(),
                 TaskType.Table => task.Get<TableAction>(),
+                TaskType.List => task.Get<ListAction>(),
                 _ => throw new NotSupportedException($"未实现的动作类型: {type}")
             };
 

@@ -33,6 +33,9 @@ public class CrawlerEngine
                 case TableAction table:
                     await TableAsync(table);
                     break;
+                case ListAction list:
+                    await ListAsync(list.Selector);
+                    break;
                 default:
                     throw new NotSupportedException();
             }
@@ -87,5 +90,13 @@ public class CrawlerEngine
             var dataList = dbHelper.BuildInsertDataList(scrapedRows, table.Table.Columns);
             await dbHelper.SaveToDb(dataList, table.Table.Name);
         }
+    }
+
+    private async Task ListAsync(string selector)
+    {
+        await _page.WaitForSelectorAsync(selector);
+        var list = await _page.QuerySelectorAllAsync(selector);
+        var allTexts = await Task.WhenAll(list.Select(r => r.InnerTextAsync()));
+        allTexts.Select(t => t.Trim()).ToList().ForEach(t => Console.WriteLine(t));
     }
 }
