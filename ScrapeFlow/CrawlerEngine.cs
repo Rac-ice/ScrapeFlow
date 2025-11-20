@@ -4,12 +4,12 @@ using SqlSugar;
 public class CrawlerEngine
 {
     private readonly IPage _page;
-    private readonly SqlSugarClient _db;
+    private readonly DatabaseHelper _dbHelper;
 
     public CrawlerEngine(IPage page, SqlSugarClient db)
     {
         _page = page;
-        _db = db;
+        _dbHelper = new DatabaseHelper(db);
     }
 
     public async Task ExecuteAsync(List<TaskAction> actions)
@@ -34,7 +34,7 @@ public class CrawlerEngine
                     await TableAsync(table);
                     break;
                 case ListAction list:
-                    await ListAsync(list.Selector);
+                    await ListAsync(list);
                     break;
                 default:
                     throw new NotSupportedException();
@@ -81,22 +81,33 @@ public class CrawlerEngine
 
         if (table.SaveToDb)
         {
-            var dbHelper = new DatabaseHelper(_db);
-            if (!dbHelper.IsAnyTable(table.Table.Name))
+            if (!_dbHelper.IsAnyTable(table.Table.Name))
             {
-                dbHelper.InitTables(table.Table);
+                _dbHelper.InitTables(table.Table);
             }
 
-            var dataList = dbHelper.BuildInsertDataList(scrapedRows, table.Table.Columns);
-            await dbHelper.SaveToDb(dataList, table.Table.Name);
+            var dataList = _dbHelper.BuildInsertDataList(scrapedRows, table.Table.Columns);
+            await _dbHelper.SaveToDb(dataList, table.Table.Name);
         }
     }
 
-    private async Task ListAsync(string selector)
+    private async Task ListAsync(ListAction list)
     {
-        await _page.WaitForSelectorAsync(selector);
-        var list = await _page.QuerySelectorAllAsync(selector);
-        var allTexts = await Task.WhenAll(list.Select(r => r.InnerTextAsync()));
-        allTexts.Select(t => t.Trim()).ToList().ForEach(t => Console.WriteLine(t));
+        await _page.WaitForSelectorAsync(list.Selector);
+        var rows = await _page.QuerySelectorAllAsync(list.Selector);
+        var allTexts = await Task.WhenAll(rows.Select(r => r.InnerTextAsync()));
+        var txts = allTexts.Select(t => t.Trim()).ToList();
+        txts.ForEach(t => Console.WriteLine(t));
+
+        if (list.SaveToDb)
+        {
+            if (!_dbHelper.IsAnyTable(list.Table.Name))
+            {
+                _dbHelper.InitTables(list.Table);
+            }
+
+            var dataList = _dbHelper.BuildInsertDataList(txts.Select(t => new List<string> { t }).ToList(), list.Table.Columns);
+            await _dbHelper.SaveToDb(dataList, list.Table.Name);
+        }
     }
 }

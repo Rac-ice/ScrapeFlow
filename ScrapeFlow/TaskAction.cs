@@ -63,4 +63,8 @@ public class Column
 public class ListAction : TaskAction
 {
     public string Selector { get; set; } = string.Empty;
+
+    public bool SaveToDb { get; set; }
+
+    public Table Table { get; set; } = new Table();
 }
