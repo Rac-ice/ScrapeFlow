@@ -96,8 +96,8 @@ public class CrawlerEngine
         await _page.WaitForSelectorAsync(list.Selector);
         var rows = await _page.QuerySelectorAllAsync(list.Selector);
         var allTexts = await Task.WhenAll(rows.Select(r => r.InnerTextAsync()));
-        var txts = allTexts.Select(t => t.Trim()).ToList();
-        txts.ForEach(t => Console.WriteLine(t));
+        var txts = allTexts.Select(t => new List<string> { t.Trim() }).ToList();
+        txts.ForEach(t => t.ForEach(a => Console.WriteLine(a)));
 
         if (list.SaveToDb)
         {
@@ -106,7 +106,7 @@ public class CrawlerEngine
                 _dbHelper.InitTables(list.Table);
             }
 
-            var dataList = _dbHelper.BuildInsertDataList(txts.Select(t => new List<string> { t }).ToList(), list.Table.Columns);
+            var dataList = _dbHelper.BuildInsertDataList(txts, list.Table.Columns);
             await _dbHelper.SaveToDb(dataList, list.Table.Name);
         }
     }
